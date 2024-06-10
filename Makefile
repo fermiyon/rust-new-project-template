@@ -1,4 +1,10 @@
-rust-version:
+SHELL := /bin/bash
+.PHONY: help
+
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+
+rust-version: ## Display Rust utilities' versions
 	@echo "Rust command-line utility versions:"
 	rustc --version 			#rust compiler
 	cargo --version 			#rust package manager
@@ -6,26 +12,26 @@ rust-version:
 	rustup --version			#rust toolchain manager
 	clippy-driver --version		#rust linter
 
-format:
+format: ## Format the code
 	cargo fmt --quiet
 
-format-check:
+format-check: ## Check code formatting
 	@rustup component add rustfmt 2> /dev/null
 	@cargo fmt --all -- --check
 
-lint:
+lint: ## Lint the code
 	cargo clippy --quiet
 
-test:
+test: ## Run tests
 	cargo test --quiet
 
-run:
+run: ## Run the application
 	cargo run
 
-release:
+release: ## Build release version
 	cargo build --release
 
-build-release:
+build-release: ## Build release for the current platform
 	@echo "Building release version for platfomr $(shell uname -s)"
 	cargo build --release 
 
