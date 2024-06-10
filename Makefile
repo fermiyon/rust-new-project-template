@@ -42,4 +42,7 @@ bump: ## Bump the version number
 	sed -i -E "s/^version = .*/version = \"$$updated_version\"/" Cargo.toml
 	@echo "New version is $(shell cargo pkgid | cut -d# -f2)"%
 
+doc: ## Create docs
+	cargo doc
+
 all: format lint test run
