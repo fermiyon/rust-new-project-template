@@ -35,4 +35,11 @@ build-release: ## Build release for the current platform
 	@echo "Building release version for platfomr $(shell uname -s)"
 	cargo build --release 
 
+bump: ## Bump the version number
+	@echo "Current version is $(shell cargo pkgid | cut -d# -f2)"
+	@read -p "Enter new version number: " version; \
+	updated_version=$$(cargo pkgid | cut -d# -f2 | sed -E "s/([0-9]+\.[0-9]+\.[0-9]+)$$/$$version/"); \
+	sed -i -E "s/^version = .*/version = \"$$updated_version\"/" Cargo.toml
+	@echo "New version is $(shell cargo pkgid | cut -d# -f2)"%
+
 all: format lint test run
